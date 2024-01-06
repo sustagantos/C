@@ -1,0 +1,1 @@
+Data Structures folder, where I'll put some of the most importants data structures in c
