@@ -45,34 +45,49 @@ void addToList(linkedList *l, int value) {  //adds a number to the list, not in 
 void printList(linkedList *l){  //prints list
 
     node *aux = l->first;       
-    printf("linked list: ");
+    printf("\nlinked list: ");
 
     while(aux!=NULL){  //while node isn't NULL
         printf("%d, ",aux->info);  //prints its info
         aux=aux->next;  //goes to next
     }
-    printf("\n");
 
 }
     
-void findInList(linkedList *l, int value){  //finds in list, if there is to find
+node* findInList(linkedList *l, int value){  //finds in list, if there is to find
     
     node *aux = l->first;
 
-    while(aux != NULL){
-        if(aux->info == value){
-            printf("%d is in the list!\n",value);
-            return;
+    while(aux != NULL){ //while node isn't NULL
+        if(aux->info == value){ //checks if value is equal aux->info
+            printf("\n%d is in the list",value);    //prints it's in and returns
+            return aux;
         }
-        aux = aux->next;
+        aux = aux->next;    //goes to next element
     }
 
-    printf("%d is not in the list!\n",value);
+    printf("\n%d is not in the list",value);    //prints it's not in list and returns NULL
+    return NULL;
 
 }
 
 void removeFromList(linkedList *l, int value){
-    
+
+    node *aux = l->first;
+
+    if(findInList(l,value) != NULL){    //if value is in list
+
+        while (aux->next->info != value){  //goes to pre-value
+            aux = aux->next;
+        }
+
+        aux->next = aux->next->next;    //node points to next next value
+        free(aux->next);    //frees unused node
+
+        printf(" and got removed!");
+        return;
+    }
+    printf(" so it can't be removed!");
 }
 
 void main(){
@@ -83,9 +98,17 @@ void main(){
         addToList(list, i);
     }
 
+    printf("\n\nprinting list:");
     printList(list);
 
+    printf("\n\nsearching in list:");
     findInList(list, 18);
     findInList(list, 23);
 
+    printf("\n\nremoving from list:");
+    removeFromList(list,18);
+    removeFromList(list, 23);
+
+    printf("\n\nprinting list:");
+    printList(list);
 }
