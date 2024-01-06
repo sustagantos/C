@@ -14,5 +14,10 @@ typedef struct LINKEDLIST{
 
 linkedList* listInit();
 node* createNode(int value);
+void addToList(linkedList *l, int value);
+void printList(linkedList *l);
+node* findInList(linkedList *l, int value);
+void removeFromList(linkedList *l, int value);
+
 
 #endif
