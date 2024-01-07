@@ -28,7 +28,7 @@ void addToQueue(queue *q, int value) {  //adds a number to the queue beginning
     node *newNode = createNode(value);  //creates a new node, with parameter value
     node *aux = q->first;  //aux = the first queue item
 
-    newNode->next = aux;  //insere na primeira posição
+    newNode->next = aux;  //insert in first position
     q->first = newNode;     //q points to new node now
     q->size++;
 
