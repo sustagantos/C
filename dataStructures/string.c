@@ -71,7 +71,7 @@ int sentenceSize(sentence *s){ //prints sentence size
 
 }
 
-void freeSentence(sentence *sent) {
+void freeSentence(sentence *sent) {     //frees sentence
 
     element *aux = sent->first;
     element *aux2;
@@ -86,31 +86,87 @@ void freeSentence(sentence *sent) {
 
 }
 
+void copySentence(sentence *destination, sentence *source){     //copies second to first
+
+    element *aux = source->first;
+    while(aux != NULL){
+        addToSentence(destination, aux->letter);
+        aux = aux->next;
+    }
+
+}
+
+void concatenate(sentence *destination, sentence *first, sentence *second){
+
+    element *aux = destination->first;
+    copySentence(destination, first);   //copies first to destination
+    copySentence(destination, second);  //copies second to destination
+
+}
+
 void main(){
-    sentence *phrase = sentenceInit();
-    char string[MAX] = "C programming", string02[MAX] = "PalmeirasMuitoFoda";
-    int size;
 
-    for(int i = 0; string[i] != NULL; i++){
-        addToSentence(phrase, string[i]);
+    char userInput01[MAX], userInput02[MAX];
+    int s01size, s02size;
+
+    sentence *s01 = sentenceInit();
+    sentence *s02 = sentenceInit();
+    sentence *s03 = sentenceInit();
+
+
+    printf("\nthis is dinamic \"string\" in C!");
+    printf("\nit allocates memory in execution time to it, in sort of a linked list");
+
+
+    printf(SEPARATOR);
+
+
+    printf("\nType something: ");
+    fgets(userInput01, MAX, stdin);     //gets user input
+    userInput01[strcspn(userInput01, "\n")] = '\0';     //changes "\n" to "\0"
+
+    for(size_t i=0; i<strlen(userInput01); i++){    //goes trough user input adding to sentence
+        addToSentence(s01, userInput01[i]);
     }
 
-    size = sentenceSize(phrase);
+    s01size = sentenceSize(s01);    //gets sentence size
 
-    printSentence(phrase);
-    printf("\nsize = %d",size);
-    freeSentence(phrase);
+    printSentence(s01);
+    printf(" has %d characters (var is s01)",s01size);
 
-    for(int i = 0; string02[i] != NULL; i++){
-        addToSentence(phrase, string02[i]);
+
+    printf(SEPARATOR);
+
+
+    printf("\nFirst sentence will be copied to another");
+
+    copySentence(s02, s01);     //s01 copied to s02
+    freeSentence(s01);
+
+    printf("\nFirst is now empty, so type another one: ");
+    fgets(userInput01, MAX, stdin);     //gets user input
+    userInput01[strcspn(userInput01, "\n")] = '\0';     //changes "\n" to "\0"
+
+    for(size_t i=0; i<strlen(userInput01); i++){    //goes trough user input adding to sentence
+        addToSentence(s01, userInput01[i]);
     }
 
-    size = sentenceSize(phrase);
 
-    printSentence(phrase);
-    printf("\nsize = %d",size);
-
-    
+    printf(SEPARATOR);    
 
 
+    printSentence(s01);
+    printf(" (var is s01)");
+    printSentence(s02);
+    printf(" (var is s02)");
+
+
+    printf(SEPARATOR);
+
+
+    printf("\nNow, this is the concatenated version of both sentences:");
+    concatenate(s03, s01, s02);
+
+    printSentence(s03);
+    printf(" (var is s03)");
 }
