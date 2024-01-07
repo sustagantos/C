@@ -5,10 +5,12 @@
 #include "stack.h"
 
 
-stack* stackInit(){  //allocs memory for stack, and first->NULL
+stack* stackInit(){  //allocs memory for stack, and first/last->NULL
     
     stack *s = (stack *) malloc (sizeof(stack));
     s->first = NULL;
+    s->last = NULL;
+    s->size = 0;
     return s;
 
 }
@@ -18,41 +20,58 @@ node* createNode(int value){  //allocs memory for stack Node, and puts a value i
     node *n = (node *) malloc (sizeof(node));  //creates node and allocs memory to it
     n->info = value;
     n->next = NULL;
+    n->previous = NULL;
     return n;
     
 }
 
-void addTostack(stack *s, int value) {  //adds a number to the stack
+void addTostack(stack *s, int value) {  //adds a number to the stack (last position)
 
     node *newNode = createNode(value);  //creates a new node, with parameter value
-    node *aux = s->first;  //aux = the first queue item
-
-    while(aux != NULL){
-        aux = aux->next;
+    
+    if(s->first == NULL){
+        s->first = newNode;
+        s->last = newNode;
+    }else{
+        newNode->previous = s->last;
+        s->last->next = newNode;
+        s->last = newNode;
     }
 
-    newNode->next = NULL;  //insert in last position
-    aux->next = newNode;     //s points to new node now
+    s->size++;
 
 }
 
 void printStack(stack *s){      //prints stack
 
-    node *aux = s->first;
+    node *aux = s->last;
 
     printf("\nstack:");
 
     while(aux != NULL){
-        printf(" %d", aux->info);
-        aux = aux->next;
+        printf(" %d,",aux->info);
+        aux = aux->previous;
     }
+}
 
+void removeFromStack(stack *s){     //removes from last position
+
+    node *aux = s->last;
+
+    if(s->last == NULL){
+        printf("\nstack is empty");
+    }else{
+        s->last->previous->next = NULL;
+        s->last = s->last->previous;
+        free(aux);
+    }
+    s->size--;
 
 }
 
 void main(){
 
-    stack *s01 = stackInit();
+    stack *s01 = stackInit();   
 
     addTostack(s01, 3);
     addTostack(s01, 5);
@@ -60,5 +79,8 @@ void main(){
     addTostack(s01, 11);
 
     printStack(s01);
+    removeFromStack(s01);
+    printStack(s01);
+
 
 }
