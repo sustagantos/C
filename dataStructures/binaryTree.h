@@ -14,5 +14,10 @@ typedef struct BINTREE{
 }binTree;
 
 
+void printTree(node *root);
+node* addToTree(node *root, int value);
+node* createNode(int value);
+binTree* binTreeInit();
+
 
 #endif

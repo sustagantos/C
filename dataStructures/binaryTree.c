@@ -27,47 +27,69 @@ node* createNode(int value){  //allocs memory for B Tree Node, and puts a value 
     
 } 
 
-void addToTree(binTree *t, node *newNode){    //ads to tree, in order
+node *addToTree(node *root, int value){
 
-    node *aux = t->first;
+    if(root == NULL){
+        printf("\nadded %d",value);
+        return createNode(value);
+    }
 
-    if(aux == NULL){    //if tree is empty
-        //aux = newNode;
-        t->first = newNode;
-        printf("\ntree was empty, so added to first place");
+    if(root->info < value){
+        root->right = addToTree(root->right,value);
+
+    }else if(root->info > value){
+        root->left = addToTree(root->left,value);
+    }
+    
+    return root;
+
+}
+//it's working now
+
+void printTree(node *root){     //prints tree
+
+
+    if (root == NULL){
+        return;
+    }
+    
+    /*
+    if (root->left == NULL && root->right == NULL){    //if node is leaf, print its data   
+        printf(" %d,",root->info); 
         return;
     }
 
-    if(newNode->info > aux->info){  //if it's bigger, goes to right
-        printf("\ngoes to right");
-        addToTree(aux->right, newNode);
+    if (root->left != NULL){   //if there is left, starts recursion
+       printTree(root->left);
+    }    
+
+    if (root->right != NULL){   //if there is right, starts recursion
+       printTree(root->right);
     }
+    */
 
-    if(newNode->info < aux->info){  //if it's smaller, goes to left
-        printf("\ngoes to left");
-        addToTree(aux->left, newNode);
-    }
+    printf(" %d,",root->info);
+    printTree(root->left);
+    printTree(root->right);
 
-    free(aux);
-
-}
-//this function isn't working!!!!
+} 
 
 void main(){
 
     binTree *tree = binTreeInit();
-    node *nodeArray[MAX];
+    //node *nodeArray[MAX];
+    node *root = tree->first;
+
 
     srand(time(NULL));
 
     for(int i = 0; i<= MAX; i++){
         int r = rand()%100;
-        node *newNode = createNode(r);
-        nodeArray[i] = newNode;
-        //printf("\nnode with value of %d created", r);
-        addToTree(tree, nodeArray[i]);
+        root = addToTree(root, r);
     } 
 
+    printf("\n\nTREE:");
+    printTree(root);
 
 }
 
